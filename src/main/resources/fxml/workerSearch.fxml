@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.workerSearchController">
+   <bottom>
+      <JFXButton buttonType="RAISED" onAction="#backToMenu" style="-fx-background-color: gray;" text="Powrót do menu" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="100.0" right="900.0" />
+         </BorderPane.margin>
+      </JFXButton>
+   </bottom>
+   <center>
+      <TableView fx:id="workersTableView" maxHeight="300.0" maxWidth="1000.0" minHeight="200.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+         <columns>
+            <TableColumn fx:id="nameColumn" prefWidth="148.00003051757812" text="Imię" />
+            <TableColumn fx:id="surnameColumn" prefWidth="146.0" text="Nazwisko" />
+            <TableColumn fx:id="branchColumn" prefWidth="159.0" text="Stanowisko" />
+            <TableColumn fx:id="birthColumn" minWidth="0.0" prefWidth="200.0" text="Data urodzenia" />
+            <TableColumn fx:id="addressColumn" prefWidth="218.0" text="Adres" />
+            <TableColumn fx:id="salaryColumn" minWidth="1.0" prefWidth="127.0" text="Wynagrodzenie" />
+         </columns>
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="50.0" right="50.0" />
+         </BorderPane.margin>
+      </TableView>
+   </center>
+   <top>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <ToolBar minHeight="45.0" minWidth="1100.0" prefWidth="1100.0" style="-fx-background-color: #660099;">
+               <items>
+                  <JFXHamburger prefHeight="35.0" prefWidth="65.0">
+                     <padding>
+                        <Insets left="12.0" />
+                     </padding>
+                  </JFXHamburger>
+                  <Label text="Znajdź osobę" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="17.0" />
+                     </font>
+                     <padding>
+                        <Insets left="30.0" />
+                     </padding>
+                  </Label>
+               </items>
+            </ToolBar>
+            <VBox maxHeight="100.0" prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: #6699FF; -fx-border-radius: 5; -fx-border-width: 1;">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox minWidth="200.0" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="Imie" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <TextField fx:id="nameField" />
+                              <Label text="Nazwisko" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <TextField fx:id="surnameField" />
+                           </children>
+                           <HBox.margin>
+                              <Insets right="50.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox minWidth="300.0" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="Stanowisko" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <TextField fx:id="branchField" prefHeight="25.0" prefWidth="169.0" />
+                              <Label text="Data urodzenia" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="32.0" text="Dzień" textFill="WHITE">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <ComboBox fx:id="dayCombo" minWidth="60.0" prefHeight="25.0" prefWidth="33.0">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </ComboBox>
+                                    <Label text="Miesiąc" textFill="WHITE">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <ComboBox fx:id="monthCombo" minWidth="60.0" prefHeight="25.0" prefWidth="33.0">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </ComboBox>
+                                    <Label text="Rok" textFill="WHITE">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <ComboBox fx:id="yearCombo" minWidth="60.0" prefHeight="25.0" prefWidth="33.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                           <HBox.margin>
+                              <Insets right="50.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox maxWidth="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="Adres" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Label>
+                              <TextField fx:id="addressField" prefHeight="25.0" prefWidth="135.0" />
+                              <Label text="Wynagrodzenie" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="56.0" text="Od" textFill="WHITE" />
+                                    <TextField fx:id="salaryFromField" prefHeight="25.0" prefWidth="90.0">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <Label prefHeight="17.0" prefWidth="56.0" text="Do" textFill="WHITE" />
+                                    <TextField fx:id="salaryToField" prefHeight="25.0" prefWidth="94.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="128.0" text="Wyszukaj">
+                           <HBox.margin>
+                              <Insets right="10.0" top="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="115.0" text="Sortuj rosnąco">
+                           <HBox.margin>
+                              <Insets left="650.0" right="10.0" top="30.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="Sortuj malejąco">
+                           <HBox.margin>
+                              <Insets top="30.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets bottom="20.0" left="50.0" right="50.0" top="20.0" />
+               </VBox.margin>
+            </VBox>
+         </children>
+      </VBox>
+   </top>
+</BorderPane>

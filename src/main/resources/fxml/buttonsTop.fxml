@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox id="buttonsTop" fx:id="boxButtonsTop" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="2.0" style="-fx-background-color: #4682b4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.buttonsTopController">
+   <children>
+      <ImageView fitHeight="204.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/sliderImageMain.png" />
+         </image></ImageView>
+      <Button fx:id="workersListButton" alignment="TOP_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#openWorkersList" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: #333399;" text="%workersList" textFill="WHITE">
+         <graphic>
+            <ImageView fitHeight="47.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/workersListIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="workerSearchButton" alignment="TOP_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#openWorkerSearch" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: #333399;" text="%workerSearch" textFill="WHITE">
+         <graphic>
+            <ImageView fitHeight="47.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/workerSearchIcon.png" />
+               </image></ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="workerAddButton" alignment="TOP_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#openWorkerAdd" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: #333399;" text="%workerAdd" textFill="WHITE">
+         <graphic>
+            <ImageView fitHeight="47.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/workerAddIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="workerEditButton" alignment="TOP_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#openWorkerEdit" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: #333399;" text="%workerEdit" textFill="WHITE">
+         <graphic>
+            <ImageView fitHeight="47.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/workerEditIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="workerRemoveButton" alignment="TOP_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#openWorkerRemove" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: #333399;" text="%workerRemove" textFill="WHITE">
+         <graphic>
+            <ImageView fitHeight="47.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/workerDropIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="exitButton" alignment="TOP_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#openExit" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: #333399;" text="%exit" textFill="WHITE">
+         <graphic>
+            <ImageView fitHeight="47.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/exitIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</VBox>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.workersListController">
+   <bottom>
+      <JFXButton buttonType="RAISED" onAction="#backToMenu" style="-fx-background-color: gray;" text="Powrót do menu" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="20.0" right="900.0" />
+         </BorderPane.margin>
+      </JFXButton>
+   </bottom>
+   <center>
+      <TableView fx:id="workersTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="nameColumn" prefWidth="148.00003051757812" text="Imię" />
+          <TableColumn fx:id="surnameColumn" prefWidth="146.0" text="Nazwisko" />
+            <TableColumn fx:id="branchColumn" prefWidth="159.0" text="Stanowisko" />
+            <TableColumn fx:id="birthColumn" minWidth="0.0" prefWidth="200.0" text="Data urodzenia" />
+            <TableColumn fx:id="addressColumn" prefWidth="218.0" text="Adres" />
+            <TableColumn fx:id="salaryColumn" minWidth="1.0" prefWidth="127.0" text="Wynagrodzenie" />
+        </columns>
+         <BorderPane.margin>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="100.0" />
+         </BorderPane.margin>
+      </TableView>
+   </center>
+</BorderPane>
