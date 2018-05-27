@@ -24,14 +24,14 @@
       </JFXButton>
    </bottom>
    <center>
-      <TableView fx:id="workersTableView" maxHeight="300.0" maxWidth="1000.0" minHeight="200.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="workersTableView" editable="true" maxHeight="300.0" maxWidth="1000.0" minHeight="200.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <columns>
-            <TableColumn fx:id="nameColumn" prefWidth="148.00003051757812" text="Imię" />
-            <TableColumn fx:id="surnameColumn" prefWidth="146.0" text="Nazwisko" />
-            <TableColumn fx:id="branchColumn" prefWidth="159.0" text="Stanowisko" />
-            <TableColumn fx:id="birthColumn" minWidth="0.0" prefWidth="200.0" text="Data urodzenia" />
-            <TableColumn fx:id="addressColumn" prefWidth="218.0" text="Adres" />
-            <TableColumn fx:id="salaryColumn" minWidth="1.0" prefWidth="127.0" text="Wynagrodzenie" />
+            <TableColumn fx:id="nameColumn" onEditCommit="#onEditCommitName" prefWidth="148.00003051757812" text="Imię" />
+            <TableColumn fx:id="surnameColumn" onEditCommit="#onEditCommitSurname" prefWidth="146.0" text="Nazwisko" />
+            <TableColumn fx:id="branchColumn" onEditCommit="#onEditCommitPosition" prefWidth="159.0" text="Stanowisko" />
+            <TableColumn fx:id="birthColumn" minWidth="0.0" onEditCommit="#onEditCommitBirthDate" prefWidth="200.0" text="Data urodzenia" />
+            <TableColumn fx:id="addressColumn" onEditCommit="#onEditCommitAddress" prefWidth="218.0" text="Adres" />
+            <TableColumn fx:id="salaryColumn" minWidth="1.0" onEditCommit="#onEditCommitSalary" prefWidth="127.0" text="Wynagrodzenie" />
          </columns>
          <BorderPane.margin>
             <Insets bottom="20.0" left="50.0" right="50.0" />
@@ -165,12 +165,12 @@
                               <Insets right="10.0" top="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="115.0" text="Sortuj rosnąco">
+                        <Button mnemonicParsing="false" onAction="#sortAsc" prefHeight="25.0" prefWidth="115.0" text="Sortuj rosnąco">
                            <HBox.margin>
                               <Insets left="650.0" right="10.0" top="30.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="Sortuj malejąco">
+                        <Button mnemonicParsing="false" onAction="#sortDesc" prefHeight="25.0" prefWidth="124.0" text="Sortuj malejąco">
                            <HBox.margin>
                               <Insets top="30.0" />
                            </HBox.margin>

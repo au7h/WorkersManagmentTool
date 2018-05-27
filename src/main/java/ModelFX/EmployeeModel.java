@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.omg.CORBA.portable.ApplicationException;
+import utils.setModelColumns;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  */
 public class EmployeeModel {
     private ObjectProperty<EmployeeFX> employeeFXObjectProperty = new SimpleObjectProperty<>(new EmployeeFX());
+    private ObjectProperty<EmployeeFX> employeeFXObjectPropertyEdit = new SimpleObjectProperty<>(new EmployeeFX());
     private ObservableList<EmployeeFX> employeeFXObservableList = FXCollections.observableArrayList();
 
     private void InitEmployeeFx(List<Employee> employees) {
@@ -26,7 +28,7 @@ public class EmployeeModel {
             employeeFX.setAddress(employee.getAddress());
             employeeFX.setBirthDate(employee.getBirthDate());
             employeeFX.setBranch(employee.getBranch());
-            employee.setSalary(employee.getSalary());
+            employeeFX.setSalary(employee.getSalary());
             this.employeeFXObservableList.addAll(employeeFX);
         });
     }
@@ -62,6 +64,23 @@ public class EmployeeModel {
         }
     }
 
+    public void updateDatabaseFXObj(){
+        if(dbConn.entityManagerFactory.isOpen() && dbConn.isConnected) {
+            Employee employee = dbConn.entityManager.find(Employee.class, employeeFXObjectPropertyEdit.getValue().getId());
+            dbConn.entityManager.getTransaction().begin();
+            setModelColumns.setModel(employee, employeeFXObjectPropertyEdit);
+            dbConn.entityManager.getTransaction().commit();
+            //dbConn.disconnectDatabase();
+        } else {
+            dbConn.connectToDatabase();
+            Employee employee = dbConn.entityManager.find(Employee.class, employeeFXObjectPropertyEdit.getValue().getId());
+            dbConn.entityManager.getTransaction().begin();
+            setModelColumns.setModel(employee, employeeFXObjectPropertyEdit);
+            dbConn.entityManager.getTransaction().commit();
+            //dbConn.disconnectDatabase();
+        }
+    }
+
     public EmployeeFX getEmployeeFXObjectProperty() {
         return employeeFXObjectProperty.get();
     }
@@ -81,4 +100,17 @@ public class EmployeeModel {
     public void setEmployeeFXObservableList(ObservableList<EmployeeFX> employeeFXObservableList) {
         this.employeeFXObservableList = employeeFXObservableList;
     }
+
+    public EmployeeFX getEmployeeFXObjectPropertyEdit() {
+        return employeeFXObjectPropertyEdit.get();
+    }
+
+    public ObjectProperty<EmployeeFX> employeeFXObjectPropertyEditProperty() {
+        return employeeFXObjectPropertyEdit;
+    }
+
+    public void setEmployeeFXObjectPropertyEdit(EmployeeFX employeeFXObjectPropertyEdit) {
+        this.employeeFXObjectPropertyEdit.set(employeeFXObjectPropertyEdit);
+    }
+
 }

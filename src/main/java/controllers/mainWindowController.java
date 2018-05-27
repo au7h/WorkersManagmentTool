@@ -1,5 +1,6 @@
 package controllers;
 
+import dbUtils.dbConn;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,6 +42,7 @@ public class mainWindowController {
 
     public void closeApp() {
         if(dialogsUtils.dialogExitConfirmation().get() == ButtonType.OK){
+            if(dbConn.isConnected) dbConn.disconnectDatabase();
             Platform.exit();
             System.exit(0);
         }

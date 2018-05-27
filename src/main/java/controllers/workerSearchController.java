@@ -10,11 +10,17 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
 import org.omg.CORBA.portable.ApplicationException;
+import utils.dialogsUtils;
 import utils.fxmlUtils;
+
+import static javafx.scene.input.KeyCode.T;
 
 
 /**
@@ -59,8 +65,13 @@ public class workerSearchController {
 
     private EmployeeModel employeeModel;
 
+    public String query;
+
     @FXML
     public void initialize(){
+        //to avoid bad query format
+        query = "From Employees";
+
         dbConn.connectToDatabase();
         for(int i=1;i<32;i++)
             dayCombo.getItems().add(i);
@@ -72,7 +83,7 @@ public class workerSearchController {
         try {
             this.employeeModel.init();
         }catch(ApplicationException e){
-            e.printStackTrace();
+            dialogsUtils.errorDialog(e.getMessage());
         } finally {
             dbConn.disconnectDatabase();
         }
@@ -83,10 +94,22 @@ public class workerSearchController {
         this.birthColumn.setCellValueFactory(cellData-> cellData.getValue().birthDateProperty());
         this.addressColumn.setCellValueFactory(cellData-> cellData.getValue().addressProperty());
         this.salaryColumn.setCellValueFactory(cellData-> cellData.getValue().salaryProperty());
+
+        this.nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.surnameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.branchColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.birthColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.addressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.salaryColumn.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
+
+        this.workersTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.employeeModel.setEmployeeFXObjectPropertyEdit(newValue);
+        });
     }
 
     @FXML
     public void backToMenu() {
+        if(dbConn.isConnected) dbConn.disconnectDatabase();
         mainWindowController mwc = mbc.getMwc();
         mwc.loadMenuScreen();
     }
@@ -95,16 +118,37 @@ public class workerSearchController {
     public void search(){
         if(!dbConn.isConnected) dbConn.connectToDatabase();
         short wchichIfWorks = 0;
-        String query ="FROM Employees where ";
+        query ="FROM Employees where ";
         if(nameField.getText().isEmpty()&&surnameField.getText().isEmpty()&&branchField.getText().isEmpty()
                 &&dayCombo.getSelectionModel().getSelectedItem()==null&&monthCombo.getSelectionModel().getSelectedItem()==null
-                &&yearCombo.getSelectionModel().getSelectedItem()==null&&addressField.getText().isEmpty()) createErrorWindow("Wpisz cokolwiek!");
+                &&yearCombo.getSelectionModel().getSelectedItem()==null&&addressField.getText().isEmpty()
+                &&salaryFromField.getText().isEmpty()&&salaryToField.getText().isEmpty()) {
+            //dialogsUtils.createErrorWindow("Wpisz cokolwiek!");
+            query = "FROM Employees";
+            executeQueryOnTable(query);
+        }
         else {
             if (!nameField.getText().isEmpty()) {
-                query += "name='" + nameField.getText() + "'";
+                if(nameField.getText().matches("[%]")){
+                    if(wchichIfWorks!=0){
+                        query += "and name like '%'";
+                    }else {
+                        query += "name like '%'";
+                    }
+                }else {
+                    query += "name='" + nameField.getText() + "'";
+                }
                 wchichIfWorks = 1;
-            } else if (!surnameField.getText().isEmpty()) {
-                query += "surname='" + surnameField.getText() + "'";
+            } if (!surnameField.getText().isEmpty()) {
+                if(surnameField.getText().matches("[%]")){
+                    if(wchichIfWorks!=0){
+                        query += " or surname like '%'";
+                    } else {
+                        query += "surname like '%'";
+                    }
+                } else {
+                    query += "surname='" + surnameField.getText() + "'";
+                }
                 wchichIfWorks = 2;
             } else if (!branchField.getText().isEmpty()) {
                 query += "branch='" + branchField.getText() + "'";
@@ -120,6 +164,9 @@ public class workerSearchController {
             } else if (!addressField.getText().isEmpty()) {
                 query += "address='" + addressField.getText() + "'";
                 wchichIfWorks = 5;
+            } else if (!salaryFromField.getText().isEmpty() && !salaryToField.getText().isEmpty()){
+                query += "salary between " + salaryFromField.getText() + " and " + salaryToField.getText();
+                wchichIfWorks = 6;
             }
 
             if (!nameField.getText().isEmpty() && wchichIfWorks != 1)
@@ -136,16 +183,38 @@ public class workerSearchController {
                         + monthCombo.getSelectionModel().getSelectedItem() + "-"
                         + yearCombo.getSelectionModel().getSelectedItem() + "'";
             if (!addressField.getText().isEmpty() && wchichIfWorks != 5)
-                query += "address='" + addressField.getText() + "'";
+                query += "and address='" + addressField.getText() + "'";
+            if(!salaryFromField.getText().isEmpty() && !salaryToField.getText().isEmpty() && wchichIfWorks != 6)
+                query += "and salary between " + salaryFromField.getText() + " and " + salaryToField.getText();
 
-            this.workersTableView.getItems().clear();
-            try {
-                employeeModel.searchEmployee(query);
-            } catch (ApplicationException e) {
-                e.printStackTrace();
-            } finally {
-                if(dbConn.isConnected) dbConn.disconnectDatabase();
-            }
+            executeQueryOnTable(query);
+        }
+    }
+
+    //sorting up/down order-by on name column
+    @FXML
+    public void sortAsc(){
+        if(!dbConn.isConnected) dbConn.connectToDatabase();
+        this.workersTableView.getItems().clear();
+        try {
+            employeeModel.searchEmployee(query+" order by name asc");
+        } catch (ApplicationException e) {
+            dialogsUtils.errorDialog(e.getMessage());
+        } finally {
+            if(dbConn.isConnected) dbConn.disconnectDatabase();
+        }
+    }
+
+    @FXML
+    public void sortDesc(){
+        if(!dbConn.isConnected) dbConn.connectToDatabase();
+        this.workersTableView.getItems().clear();
+        try {
+            employeeModel.searchEmployee(query+" order by name desc");
+        } catch (ApplicationException e) {
+            dialogsUtils.errorDialog(e.getMessage());
+        } finally {
+            if(dbConn.isConnected) dbConn.disconnectDatabase();
         }
     }
 
@@ -153,22 +222,44 @@ public class workerSearchController {
         this.mbc = mbc;
     }
 
-    public void createErrorWindow(String msg){
-        Stage stage;
-        Pane pane;
-        Scene scene;
+    private void executeQueryOnTable(String query){
+        this.workersTableView.getItems().clear();
         try {
-            stage = new Stage();
-            pane = fxmlUtils.fxmlLoader("/fxml/EmptyEditMessage.fxml");
-            EmptyEditMessageController et = fxmlUtils.loaderForController.getController();
-            et.setEditText(msg);
-            et.setStage(stage);
-            scene = new Scene(pane);
-            stage.setScene(scene);
-            stage.initStyle(StageStyle.UNDECORATED);
-            stage.show();
-        } catch(Exception e){
-            e.printStackTrace();
+            employeeModel.searchEmployee(query);
+        } catch (ApplicationException e) {
+            dialogsUtils.errorDialog(e.getMessage());
+        } finally {
+            if(dbConn.isConnected) dbConn.disconnectDatabase();
         }
+    }
+
+    public void onEditCommitName(TableColumn.CellEditEvent<EmployeeFX, String> employeeFXStringCellEditEvent) {
+        this.employeeModel.getEmployeeFXObjectPropertyEdit().setFirstName(employeeFXStringCellEditEvent.getNewValue());
+        this.employeeModel.updateDatabaseFXObj();
+    }
+
+    public void onEditCommitSurname(TableColumn.CellEditEvent<EmployeeFX, String> employeeFXStringCellEditEvent) {
+        this.employeeModel.getEmployeeFXObjectPropertyEdit().setLastName(employeeFXStringCellEditEvent.getNewValue());
+        this.employeeModel.updateDatabaseFXObj();
+    }
+
+    public void onEditCommitPosition(TableColumn.CellEditEvent<EmployeeFX, String> employeeFXStringCellEditEvent) {
+        this.employeeModel.getEmployeeFXObjectPropertyEdit().setBranch(employeeFXStringCellEditEvent.getNewValue());
+        this.employeeModel.updateDatabaseFXObj();
+    }
+
+    public void onEditCommitBirthDate(TableColumn.CellEditEvent<EmployeeFX, String> employeeFXStringCellEditEvent) {
+        this.employeeModel.getEmployeeFXObjectPropertyEdit().setBirthDate(employeeFXStringCellEditEvent.getNewValue());
+        this.employeeModel.updateDatabaseFXObj();
+    }
+
+    public void onEditCommitAddress(TableColumn.CellEditEvent<EmployeeFX, String> employeeFXStringCellEditEvent) {
+        this.employeeModel.getEmployeeFXObjectPropertyEdit().setAddress(employeeFXStringCellEditEvent.getNewValue());
+        this.employeeModel.updateDatabaseFXObj();
+    }
+
+    public void onEditCommitSalary(TableColumn.CellEditEvent<EmployeeFX, Number> employeeFXNumberCellEditEvent) {
+        //this.employeeModel.getEmployeeFXObjectPropertyEdit().setSalary(employeeFXNumberCellEditEvent.getNewValue());
+        //this.employeeModel.updateDatabaseFXObj();
     }
 }

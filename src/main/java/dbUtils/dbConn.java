@@ -24,6 +24,7 @@ public class dbConn {
         Stage stage;
         Pane pane;
         Scene scene;
+
         /*
         //show connecting to database popup window
         try {
@@ -71,5 +72,4 @@ public class dbConn {
         dbConn.entityManager.persist(object);
         dbConn.entityManager.getTransaction().commit();
     }
-
 }

@@ -2,10 +2,15 @@ package utils;
 
 import java.util.Optional;
 
+import controllers.EmptyEditMessageController;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.ResourceBundle;
 
@@ -42,6 +47,25 @@ public class dialogsUtils {
         errorAlert.getDialogPane().setContent(errorTxt);
         errorAlert.initModality(Modality.APPLICATION_MODAL);
         errorAlert.showAndWait();
+    }
+
+    public static void createErrorWindow(String msg){
+        Stage stage;
+        Pane pane;
+        Scene scene;
+        try {
+            stage = new Stage();
+            pane = fxmlUtils.fxmlLoader("/fxml/EmptyEditMessage.fxml");
+            EmptyEditMessageController et = fxmlUtils.loaderForController.getController();
+            et.setEditText(msg);
+            et.setStage(stage);
+            scene = new Scene(pane);
+            stage.setScene(scene);
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.show();
+        } catch(Exception e){
+            dialogsUtils.errorDialog(e.getMessage());
+        }
     }
 
     public static Alert connectingDb(){

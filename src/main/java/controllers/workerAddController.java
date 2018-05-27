@@ -80,7 +80,7 @@ public class workerAddController {
             createErrorWindow("Miesiac urodzenia jest pusty");
         else if(yearCombo.getSelectionModel().getSelectedItem() == null)
             createErrorWindow("Rok urodzenia jest pusty");
-        else if(!salaryEdit.getText().matches("[0-99999]"))
+        else if(!salaryEdit.getText().matches("^\\d*$"))
             createErrorWindow("Pole wynagrodzenie musi byc liczba"); //to write
         else {
             dbConn.connectToDatabase();

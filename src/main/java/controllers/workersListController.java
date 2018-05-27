@@ -34,7 +34,7 @@ public class workersListController {
     @FXML
     TableColumn<EmployeeFX, String> addressColumn;
     @FXML
-    TableColumn<EmployeeFX, Number> salaryColumn;
+    TableColumn<EmployeeFX, Double> salaryColumn;
 
     private EmployeeModel employeeModel;
 
@@ -55,7 +55,8 @@ public class workersListController {
         this.branchColumn.setCellValueFactory(cellData-> cellData.getValue().branchProperty());
         this.birthColumn.setCellValueFactory(cellData-> cellData.getValue().birthDateProperty());
         this.addressColumn.setCellValueFactory(cellData-> cellData.getValue().addressProperty());
-        this.salaryColumn.setCellValueFactory(cellData-> cellData.getValue().salaryProperty());
+        this.salaryColumn.setCellValueFactory(cellData -> cellData.getValue().salaryProperty().asObject());
+        //this.salaryColumn.setCellValueFactory(cellData-> cellData.getValue().salaryProperty());
     }
 
     @FXML
