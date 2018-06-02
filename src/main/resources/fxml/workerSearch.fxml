@@ -88,7 +88,7 @@
                                     <Insets />
                                  </VBox.margin>
                               </Label>
-                              <TextField fx:id="branchField" prefHeight="25.0" prefWidth="169.0" />
+                              <TextField fx:id="branchField" />
                               <Label text="Data urodzenia" textFill="WHITE">
                                  <VBox.margin>
                                     <Insets bottom="10.0" top="10.0" />
@@ -136,7 +136,7 @@
                                     <Insets />
                                  </VBox.margin>
                               </Label>
-                              <TextField fx:id="addressField" prefHeight="25.0" prefWidth="135.0" />
+                              <TextField fx:id="addressField" />
                               <Label text="Wynagrodzenie" textFill="WHITE">
                                  <VBox.margin>
                                     <Insets bottom="10.0" top="10.0" />
@@ -145,13 +145,13 @@
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
                                     <Label prefHeight="17.0" prefWidth="56.0" text="Od" textFill="WHITE" />
-                                    <TextField fx:id="salaryFromField" prefHeight="25.0" prefWidth="90.0">
+                                    <TextField fx:id="salaryFromField" onKeyPressed="#textFieldSearchInit" prefHeight="25.0" prefWidth="90.0" style="-fx-border-color: red;">
                                        <HBox.margin>
                                           <Insets right="5.0" />
                                        </HBox.margin>
                                     </TextField>
                                     <Label prefHeight="17.0" prefWidth="56.0" text="Do" textFill="WHITE" />
-                                    <TextField fx:id="salaryToField" prefHeight="25.0" prefWidth="94.0" />
+                                    <TextField fx:id="salaryToField" onKeyPressed="#textFieldSearchInit" prefHeight="25.0" prefWidth="94.0" style="-fx-border-color: red;" />
                                  </children>
                               </HBox>
                            </children>

@@ -39,7 +39,7 @@
       </JFXToolbar>
       <Pane layoutY="45.0" prefHeight="259.0" prefWidth="1100.0" style="-fx-background-color: #61D4C3;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0">
          <children>
-            <JFXDrawer fx:id="drawerMain" defaultDrawerSize="280.0" prefHeight="464.0" prefWidth="305.0" resizableOnDrag="true" />
+            <JFXDrawer fx:id="drawerMain" defaultDrawerSize="280.0" prefHeight="464.0" prefWidth="283.0" resizableOnDrag="true" />
             <Label layoutX="332.0" layoutY="70.0" text="My Database Project V1.0">
                <font>
                   <Font name="Segoe UI Light" size="40.0" />

@@ -3,31 +3,24 @@ package controllers;
 
 import ModelFX.EmployeeFX;
 import ModelFX.EmployeeModel;
+import dbModels.Employee;
 import dbUtils.dbConn;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.StringConverter;
-import javafx.util.converter.NumberStringConverter;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.util.converter.DoubleStringConverter;
 import org.omg.CORBA.portable.ApplicationException;
 import utils.dialogsUtils;
-import utils.fxmlUtils;
 
-import static javafx.scene.input.KeyCode.T;
+import java.util.List;
 
 
 /**
  * Created by kamil on 15.06.2017.
  */
 public class workerSearchController {
-
     @FXML
     private TextField nameField;
     @FXML
@@ -35,37 +28,35 @@ public class workerSearchController {
     @FXML
     private TextField branchField;
     @FXML
+    private TextField addressField;
+    @FXML
     private ComboBox dayCombo;
     @FXML
     private ComboBox monthCombo;
     @FXML
     private ComboBox yearCombo;
     @FXML
-    private TextField addressField;
-    @FXML
     private TextField salaryFromField;
     @FXML
     private TextField salaryToField;
     @FXML
-    TableView<EmployeeFX> workersTableView;
+    private TableView<EmployeeFX> workersTableView;
     @FXML
-    TableColumn<EmployeeFX, String> nameColumn;
+    private TableColumn<EmployeeFX, String> nameColumn;
     @FXML
-    TableColumn<EmployeeFX, String> surnameColumn;
+    private TableColumn<EmployeeFX, String> surnameColumn;
     @FXML
-    TableColumn<EmployeeFX, String> branchColumn;
+    private TableColumn<EmployeeFX, String> branchColumn;
     @FXML
-    TableColumn<EmployeeFX, String> birthColumn;
+    private TableColumn<EmployeeFX, String> birthColumn;
     @FXML
-    TableColumn<EmployeeFX, String> addressColumn;
+    private TableColumn<EmployeeFX, String> addressColumn;
     @FXML
-    TableColumn<EmployeeFX, Number> salaryColumn;
+    private TableColumn<EmployeeFX, Double> salaryColumn;
 
     private mainBorderController mbc;
-
     private EmployeeModel employeeModel;
-
-    public String query;
+    private String query;
 
     @FXML
     public void initialize(){
@@ -93,14 +84,14 @@ public class workerSearchController {
         this.branchColumn.setCellValueFactory(cellData-> cellData.getValue().branchProperty());
         this.birthColumn.setCellValueFactory(cellData-> cellData.getValue().birthDateProperty());
         this.addressColumn.setCellValueFactory(cellData-> cellData.getValue().addressProperty());
-        this.salaryColumn.setCellValueFactory(cellData-> cellData.getValue().salaryProperty());
+        this.salaryColumn.setCellValueFactory(cellData-> cellData.getValue().salaryProperty().asObject());
 
         this.nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         this.surnameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         this.branchColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         this.birthColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         this.addressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        this.salaryColumn.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
+        this.salaryColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
 
         this.workersTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.employeeModel.setEmployeeFXObjectPropertyEdit(newValue);
@@ -129,64 +120,63 @@ public class workerSearchController {
         }
         else {
             if (!nameField.getText().isEmpty()) {
-                if(nameField.getText().matches("[%]")){
-                    if(wchichIfWorks!=0){
-                        query += "and name like '%'";
-                    }else {
-                        query += "name like '%'";
-                    }
+                if(wchichIfWorks!=0){
+                    query += "and name like '%"+nameField.getText()+"%'";
                 }else {
-                    query += "name='" + nameField.getText() + "'";
+                    query += "name like '%"+nameField.getText()+"%'";
                 }
                 wchichIfWorks = 1;
-            } if (!surnameField.getText().isEmpty()) {
-                if(surnameField.getText().matches("[%]")){
-                    if(wchichIfWorks!=0){
-                        query += " or surname like '%'";
-                    } else {
-                        query += "surname like '%'";
-                    }
+            }
+            if (!surnameField.getText().isEmpty()) {
+                if(wchichIfWorks!=0){
+                    query += "and surname like '%"+surnameField.getText()+"%'";
                 } else {
-                    query += "surname='" + surnameField.getText() + "'";
+                    query += "surname like '%"+surnameField.getText()+"%'";
                 }
                 wchichIfWorks = 2;
-            } else if (!branchField.getText().isEmpty()) {
-                query += "branch='" + branchField.getText() + "'";
+            }
+            if (!branchField.getText().isEmpty()) {
+                if(wchichIfWorks !=0) {
+                    query += " and branch like '%"+branchField.getText() + "%'";
+                } else {
+                    query += "branch like '%" + branchField.getText() + "%'";
+                }
                 wchichIfWorks = 3;
-            } else if (dayCombo.getSelectionModel().getSelectedItem() != null &&
+            }
+            if (dayCombo.getSelectionModel().getSelectedItem() != null &&
                     monthCombo.getSelectionModel().getSelectedItem() != null &&
                     yearCombo.getSelectionModel().getSelectedItem() != null) {
-                query += "birth_date='"
-                        + dayCombo.getSelectionModel().getSelectedItem() + "-"
-                        + monthCombo.getSelectionModel().getSelectedItem() + "-"
-                        + yearCombo.getSelectionModel().getSelectedItem() + "'";
+                if(wchichIfWorks!=0) {
+                    query += " and birth_date='"
+                            + dayCombo.getSelectionModel().getSelectedItem() + "-"
+                            + monthCombo.getSelectionModel().getSelectedItem() + "-"
+                            + yearCombo.getSelectionModel().getSelectedItem() + "'";
+                } else {
+                    query += "birth_date='"
+                            + dayCombo.getSelectionModel().getSelectedItem() + "-"
+                            + monthCombo.getSelectionModel().getSelectedItem() + "-"
+                            + yearCombo.getSelectionModel().getSelectedItem() + "'";
+                }
                 wchichIfWorks = 4;
-            } else if (!addressField.getText().isEmpty()) {
-                query += "address='" + addressField.getText() + "'";
+            }
+            if (!addressField.getText().isEmpty()) {
+                if(wchichIfWorks!=0) {
+                    query += " and address like '%" + addressField.getText() + "%'";
+                }else {
+                    query += "address like '%" + addressField.getText() + "%'";
+                }
                 wchichIfWorks = 5;
-            } else if (!salaryFromField.getText().isEmpty() && !salaryToField.getText().isEmpty()){
-                query += "salary between " + salaryFromField.getText() + " and " + salaryToField.getText();
+            }
+            if (!salaryFromField.getText().isEmpty() && !salaryToField.getText().isEmpty()){
+                if(wchichIfWorks!=0) {
+                    query += " and salary between " + salaryFromField.getText() + " and " + salaryToField.getText();
+                }else {
+                    query += "salary between " + salaryFromField.getText() + " and " + salaryToField.getText();
+                }
                 wchichIfWorks = 6;
             }
 
-            if (!nameField.getText().isEmpty() && wchichIfWorks != 1)
-                query += " and name='" + nameField.getText() + "'";
-            if (!surnameField.getText().isEmpty() && wchichIfWorks != 2)
-                query += " and surname='" + surnameField.getText() + "'";
-            if (!branchField.getText().isEmpty() && wchichIfWorks != 3)
-                query += " and branch='" + branchField.getText() + "'";
-            if (dayCombo.getSelectionModel().getSelectedItem() != null &&
-                    monthCombo.getSelectionModel().getSelectedItem() != null &&
-                    yearCombo.getSelectionModel().getSelectedItem() != null && wchichIfWorks != 4)
-                query += " and birth_date='"
-                        + dayCombo.getSelectionModel().getSelectedItem() + "-"
-                        + monthCombo.getSelectionModel().getSelectedItem() + "-"
-                        + yearCombo.getSelectionModel().getSelectedItem() + "'";
-            if (!addressField.getText().isEmpty() && wchichIfWorks != 5)
-                query += "and address='" + addressField.getText() + "'";
-            if(!salaryFromField.getText().isEmpty() && !salaryToField.getText().isEmpty() && wchichIfWorks != 6)
-                query += "and salary between " + salaryFromField.getText() + " and " + salaryToField.getText();
-
+            dialogsUtils.errorDialog(query);
             executeQueryOnTable(query);
         }
     }
@@ -194,23 +184,19 @@ public class workerSearchController {
     //sorting up/down order-by on name column
     @FXML
     public void sortAsc(){
-        if(!dbConn.isConnected) dbConn.connectToDatabase();
-        this.workersTableView.getItems().clear();
-        try {
-            employeeModel.searchEmployee(query+" order by name asc");
-        } catch (ApplicationException e) {
-            dialogsUtils.errorDialog(e.getMessage());
-        } finally {
-            if(dbConn.isConnected) dbConn.disconnectDatabase();
-        }
+        sortAscOrDesc("order by name asc");
     }
 
     @FXML
     public void sortDesc(){
+        sortAscOrDesc("order by name desc");
+    }
+
+    private void sortAscOrDesc(String q){
         if(!dbConn.isConnected) dbConn.connectToDatabase();
         this.workersTableView.getItems().clear();
         try {
-            employeeModel.searchEmployee(query+" order by name desc");
+            employeeModel.searchEmployee(query+" "+q);
         } catch (ApplicationException e) {
             dialogsUtils.errorDialog(e.getMessage());
         } finally {
@@ -258,8 +244,47 @@ public class workerSearchController {
         this.employeeModel.updateDatabaseFXObj();
     }
 
-    public void onEditCommitSalary(TableColumn.CellEditEvent<EmployeeFX, Number> employeeFXNumberCellEditEvent) {
-        //this.employeeModel.getEmployeeFXObjectPropertyEdit().setSalary(employeeFXNumberCellEditEvent.getNewValue());
-        //this.employeeModel.updateDatabaseFXObj();
+    public void onEditCommitSalary(TableColumn.CellEditEvent<EmployeeFX, Double> employeeFXDoubleCellEditEvent) {
+            this.employeeModel.getEmployeeFXObjectPropertyEdit().setSalary(employeeFXDoubleCellEditEvent.getNewValue());
+            this.employeeModel.updateDatabaseFXObj();
+    }
+
+    public void textFieldSearchInit(KeyEvent keyEvent) {
+        if(keyEvent.getCode()== KeyCode.ENTER)
+            search();
+    }
+
+    //its not useful for us
+    private void generatePromptForComboBox(String newValue, String name, String whatWeWant, ComboBox<String> field){
+        if(!newValue.isEmpty()) {
+            if (!dbConn.isConnected) dbConn.connectToDatabase();
+            field.getItems().clear();
+            String queryString = "FROM Employees where "+ name +" like '%" + newValue + "%'";
+            List<Employee> listOf = employeeModel.searchEmployeeAndReturnResult(queryString);
+
+            switch(whatWeWant) {
+                case "firstName":
+                    for (Employee emp : listOf)
+                        if(!field.getItems().contains(emp.getFirstName())) field.getItems().add(emp.getFirstName());
+                    break;
+                case "lastName":
+                    for (Employee emp : listOf)
+                        if(!field.getItems().contains(emp.getLastName())) field.getItems().add(emp.getLastName());
+                    break;
+                case "branch":
+                    for (Employee emp : listOf)
+                        if(!field.getItems().contains(emp.getBranch())) field.getItems().add(emp.getBranch());
+                    break;
+                case "address":
+                    for (Employee emp : listOf)
+                        if(!field.getItems().contains(emp.getAddress())) field.getItems().add(emp.getAddress());
+                    break;
+            }
+            field.show();
+        } else {
+            field = new ComboBox<>();
+            field.getItems().clear();
+            field.hide();
+        }
     }
 }

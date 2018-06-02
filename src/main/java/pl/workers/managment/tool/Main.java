@@ -1,6 +1,5 @@
 package pl.workers.managment.tool;
 
-import dbUtils.dbConn;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;

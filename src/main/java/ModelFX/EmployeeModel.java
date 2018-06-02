@@ -7,8 +7,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.omg.CORBA.portable.ApplicationException;
-import utils.setModelColumns;
+import utils.updateModeLInDb;
 
+import javax.persistence.Query;
 import java.util.List;
 
 /**
@@ -20,6 +21,7 @@ public class EmployeeModel {
     private ObservableList<EmployeeFX> employeeFXObservableList = FXCollections.observableArrayList();
 
     private void InitEmployeeFx(List<Employee> employees) {
+        this.employeeFXObservableList.clear();
         employees.forEach(employee -> {
             EmployeeFX employeeFX = new EmployeeFX();
             employeeFX.setId(employee.getId());
@@ -43,6 +45,11 @@ public class EmployeeModel {
         InitEmployeeFx(employeeList);
     }
 
+    public <T extends Employee> List<T> searchEmployeeAndReturnResult(String query){
+        Query q = dbConn.entityManager.createQuery(query);
+        List<T> resultList = q.getResultList();
+        return resultList;
+    }
 
     public void saveEmployeeInDb(String firstName, String lastName, String birthDate,
                                  String address, String branch, Double salary){
@@ -66,17 +73,11 @@ public class EmployeeModel {
 
     public void updateDatabaseFXObj(){
         if(dbConn.entityManagerFactory.isOpen() && dbConn.isConnected) {
-            Employee employee = dbConn.entityManager.find(Employee.class, employeeFXObjectPropertyEdit.getValue().getId());
-            dbConn.entityManager.getTransaction().begin();
-            setModelColumns.setModel(employee, employeeFXObjectPropertyEdit);
-            dbConn.entityManager.getTransaction().commit();
+            updateModeLInDb.findAndUpdate(employeeFXObjectPropertyEdit);
             //dbConn.disconnectDatabase();
         } else {
             dbConn.connectToDatabase();
-            Employee employee = dbConn.entityManager.find(Employee.class, employeeFXObjectPropertyEdit.getValue().getId());
-            dbConn.entityManager.getTransaction().begin();
-            setModelColumns.setModel(employee, employeeFXObjectPropertyEdit);
-            dbConn.entityManager.getTransaction().commit();
+            updateModeLInDb.findAndUpdate(employeeFXObjectPropertyEdit);
             //dbConn.disconnectDatabase();
         }
     }
