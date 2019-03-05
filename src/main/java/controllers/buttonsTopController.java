@@ -5,18 +5,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Pane;
-import utils.dialogsUtils;
-import utils.fxmlUtils;
+import utils.DialogsUtils;
+import utils.FxmlUtils;
 
 
 /**
  * Created by kamil on 10.06.2017.
  */
-public class buttonsTopController {
+public class ButtonsTopController {
 
-    private mainBorderController mbc;
+    private MainBorderController mbc;
 
-    private mainWindowController mwc;
+    private MainWindowController mwc;
 
     private static final String FXML_WORKERS_LIST = "/fxml/workersList.fxml";
     private static final String FXML_WORKER_SEARCH = "/fxml/workerSearch.fxml";
@@ -47,49 +47,49 @@ public class buttonsTopController {
     }
 
     public void openWorkersList() {
-       Pane pane = fxmlUtils.fxmlLoader(FXML_WORKERS_LIST);
-       workersListController wlc = fxmlUtils.loaderForController.getController();
+       Pane pane = FxmlUtils.fxmlLoader(FXML_WORKERS_LIST);
+       WorkersListController wlc = FxmlUtils.loaderForController.getController();
        wlc.setMbc(mbc);
        mbc.getMwc().setScreen(pane);
     }
 
     public void openWorkerSearch() {
-        Pane pane = fxmlUtils.fxmlLoader(FXML_WORKER_SEARCH);
-        workerSearchController wsc = fxmlUtils.loaderForController.getController();
+        Pane pane = FxmlUtils.fxmlLoader(FXML_WORKER_SEARCH);
+        WorkerSearchController wsc = FxmlUtils.loaderForController.getController();
         wsc.setMbc(mbc);
         mbc.getMwc().setScreen(pane);
     }
 
     public void openWorkerAdd() {
-        Pane pane = fxmlUtils.fxmlLoader(FXML_WORKER_ADD);
-        workerAddController wac = fxmlUtils.loaderForController.getController();
+        Pane pane = FxmlUtils.fxmlLoader(FXML_WORKER_ADD);
+        WorkerAddController wac = FxmlUtils.loaderForController.getController();
         wac.setMbc(mbc);
         mbc.getMwc().setScreen(pane);
     }
 
     public void openWorkerEdit() {
-        Pane pane = fxmlUtils.fxmlLoader(FXML_WORKER_EDIT);
-        workerEditController wec = fxmlUtils.loaderForController.getController();
+        Pane pane = FxmlUtils.fxmlLoader(FXML_WORKER_EDIT);
+        WorkerEditController wec = FxmlUtils.loaderForController.getController();
         wec.setMbc(mbc);
         mbc.getMwc().setScreen(pane);
     }
 
     public void openWorkerRemove() {
-        Pane pane = fxmlUtils.fxmlLoader(FXML_WORKER_REMOVE);
-        workerRemoveController wrc = fxmlUtils.loaderForController.getController();
+        Pane pane = FxmlUtils.fxmlLoader(FXML_WORKER_REMOVE);
+        WorkerRemoveController wrc = FxmlUtils.loaderForController.getController();
         wrc.setMbc(mbc);
         mbc.getMwc().setScreen(pane);
     }
 
     public void openExit() {
-        if(dialogsUtils.dialogExitConfirmation().get() == ButtonType.OK){
+        if(DialogsUtils.dialogExitConfirmation().get() == ButtonType.OK){
             Platform.exit();
             System.exit(0);
         }
     }
 
-    public void setMbc(mainBorderController mbc){
+    public void setMbc(MainBorderController mbc){
         this.mbc = mbc;
     }
-    public void setMwc(mainWindowController mwc){ this.mwc = mwc;}
+    public void setMwc(MainWindowController mwc){ this.mwc = mwc;}
 }

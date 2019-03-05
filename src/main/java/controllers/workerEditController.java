@@ -6,17 +6,17 @@ import javafx.fxml.FXML;
 /**
  * Created by kamil on 15.06.2017.
  */
-public class workerEditController {
+public class WorkerEditController {
 
-    private mainBorderController mbc;
+    private MainBorderController mbc;
 
     @FXML
     public void backToMenu() {
-        mainWindowController mwc = mbc.getMwc();
+        MainWindowController mwc = mbc.getMwc();
         mwc.loadMenuScreen();
     }
 
-    public void setMbc(mainBorderController mbc){
+    public void setMbc(MainBorderController mbc){
         this.mbc = mbc;
     }
 }

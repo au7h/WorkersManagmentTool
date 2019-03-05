@@ -1,33 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.workerRemoveController">
-   <top>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.WorkerRemoveController">
+   <children>
+      <Pane layoutX="615.0" layoutY="-5.0" prefHeight="706.0" prefWidth="486.0" style="-fx-background-color: #009999;" AnchorPane.leftAnchor="614.0" AnchorPane.rightAnchor="0.0" />
+      <Pane prefHeight="700.0" prefWidth="616.0" style="-fx-background-color: #333366;">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <JFXButton buttonType="RAISED" onAction="#backToMenu" style="-fx-background-color: blue;" text="Powrót do menu">
-                     <HBox.margin>
-                        <Insets left="50.0" top="100.0" />
-                     </HBox.margin>
-                  </JFXButton>
-               </children>
-            </HBox>
+            <Button layoutX="36.0" layoutY="491.0" mnemonicParsing="false" onAction="#backToMenu" prefHeight="33.0" prefWidth="122.0" text="Powrót do menu" />
+            <TableView fx:id="workersTableView" layoutX="36.0" layoutY="157.0" prefHeight="261.0" prefWidth="549.0">
+              <columns>
+                <TableColumn fx:id="workerIdColumn" prefWidth="118.0" text="Id pracownika" />
+                <TableColumn fx:id="workerNameColumn" prefWidth="136.0" text="Imię" />
+                  <TableColumn fx:id="workerSurnameColumn" prefWidth="294.0" text="Nazwisko" />
+              </columns>
+            </TableView>
+            <Button layoutX="308.0" layoutY="491.0" mnemonicParsing="false" onAction="#deleteWorker" prefHeight="33.0" prefWidth="77.0" text="Usuń" />
          </children>
-      </VBox>
-   </top>
-   <center>
-      <JFXTreeTableView prefHeight="151.0" prefWidth="900.0" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="50.0" left="50.0" right="50.0" />
-         </BorderPane.margin>
-      </JFXTreeTableView>
-   </center>
-</BorderPane>
+      </Pane>
+   </children>
+</AnchorPane>

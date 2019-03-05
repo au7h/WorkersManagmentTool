@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 /**
  * Created by kamil on 15.07.2017.
  */
-public class connectingController {
+public class ConnectingController {
     @FXML
     public ProgressBar progressBar;
     @FXML

@@ -1,13 +1,13 @@
 package ModelFX;
 
 import dbModels.Employee;
-import dbUtils.dbConn;
+import dbUtils.DbConn;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.omg.CORBA.portable.ApplicationException;
-import utils.updateModeLInDb;
+import dbUtils.UpdateModeLInDb;
 
 import javax.persistence.Query;
 import java.util.List;
@@ -36,17 +36,17 @@ public class EmployeeModel {
     }
 
     public void init() throws ApplicationException{
-        List<Employee> employeeList = dbConn.entityManager.createQuery("FROM Employees").getResultList();
+        List<Employee> employeeList = DbConn.entityManager.createQuery("FROM Employees").getResultList();
         InitEmployeeFx(employeeList);
     }
 
     public void searchEmployee(String query) throws ApplicationException{
-        List<Employee> employeeList = dbConn.entityManager.createQuery(query).getResultList();
+        List<Employee> employeeList = DbConn.entityManager.createQuery(query).getResultList();
         InitEmployeeFx(employeeList);
     }
 
     public <T extends Employee> List<T> searchEmployeeAndReturnResult(String query){
-        Query q = dbConn.entityManager.createQuery(query);
+        Query q = DbConn.entityManager.createQuery(query);
         List<T> resultList = q.getResultList();
         return resultList;
     }
@@ -61,24 +61,23 @@ public class EmployeeModel {
         employee.setSalary(salary);
         employee.setBranch(branch);
 
-        if(dbConn.entityManagerFactory.isOpen() && dbConn.isConnected) {
-            dbConn.commitDatabase(employee);
-            //dbConn.disconnectDatabase();
+        if(DbConn.entityManagerFactory.isOpen() && DbConn.isConnected) {
+            DbConn.commitDatabase(employee);
         } else {
-            dbConn.connectToDatabase();
-            dbConn.commitDatabase(employee);
-            //dbConn.disconnectDatabase();
+            DbConn.connectToDatabase();
+            DbConn.commitDatabase(employee);
         }
     }
 
+    public void deleteEmployee(Integer id){
+    }
+
     public void updateDatabaseFXObj(){
-        if(dbConn.entityManagerFactory.isOpen() && dbConn.isConnected) {
-            updateModeLInDb.findAndUpdate(employeeFXObjectPropertyEdit);
-            //dbConn.disconnectDatabase();
+        if(DbConn.entityManagerFactory.isOpen() && DbConn.isConnected) {
+            UpdateModeLInDb.findAndUpdate(employeeFXObjectPropertyEdit);
         } else {
-            dbConn.connectToDatabase();
-            updateModeLInDb.findAndUpdate(employeeFXObjectPropertyEdit);
-            //dbConn.disconnectDatabase();
+            DbConn.connectToDatabase();
+            UpdateModeLInDb.findAndUpdate(employeeFXObjectPropertyEdit);
         }
     }
 
@@ -113,5 +112,4 @@ public class EmployeeModel {
     public void setEmployeeFXObjectPropertyEdit(EmployeeFX employeeFXObjectPropertyEdit) {
         this.employeeFXObjectPropertyEdit.set(employeeFXObjectPropertyEdit);
     }
-
 }

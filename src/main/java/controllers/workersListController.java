@@ -3,24 +3,19 @@ package controllers;
 
 import ModelFX.EmployeeFX;
 import ModelFX.EmployeeModel;
-import dbUtils.dbConn;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.value.ObservableValue;
+import dbUtils.DbConn;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import org.omg.CORBA.portable.ApplicationException;
 
-import java.util.Date;
-
 
 /**
  * Created by kamil on 15.06.2017.
  */
-public class workersListController {
+public class WorkersListController {
 
-    private mainBorderController mbc;
+    private MainBorderController mbc;
     @FXML
     TableView<EmployeeFX> workersTableView;
     @FXML
@@ -40,14 +35,14 @@ public class workersListController {
 
     @FXML
     public void initialize(){
-        dbConn.connectToDatabase();
+        DbConn.connectToDatabase();
         this.employeeModel = new EmployeeModel();
         try {
             this.employeeModel.init();
         } catch (ApplicationException e) {
             e.printStackTrace();
         } finally {
-            dbConn.disconnectDatabase();
+            DbConn.disconnectDatabase();
         }
         this.workersTableView.setItems(this.employeeModel.getEmployeeFXObservableList());
         this.nameColumn.setCellValueFactory(cellData-> cellData.getValue().firstNameProperty());
@@ -56,16 +51,15 @@ public class workersListController {
         this.birthColumn.setCellValueFactory(cellData-> cellData.getValue().birthDateProperty());
         this.addressColumn.setCellValueFactory(cellData-> cellData.getValue().addressProperty());
         this.salaryColumn.setCellValueFactory(cellData -> cellData.getValue().salaryProperty().asObject());
-        //this.salaryColumn.setCellValueFactory(cellData-> cellData.getValue().salaryProperty());
     }
 
     @FXML
     public void backToMenu() {
-        mainWindowController mwc = mbc.getMwc();
+        MainWindowController mwc = mbc.getMwc();
         mwc.loadMenuScreen();
     }
 
-    public void setMbc(mainBorderController mbc){
+    public void setMbc(MainBorderController mbc){
         this.mbc = mbc;
     }
 }

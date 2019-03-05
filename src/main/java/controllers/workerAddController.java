@@ -4,22 +4,21 @@ package controllers;
 import ModelFX.EmployeeModel;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import dbUtils.dbConn;
+import dbUtils.DbConn;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import utils.fxmlUtils;
+import utils.FxmlUtils;
 
 /**
  * Created by kamil on 15.06.2017.
  */
-public class workerAddController {
+public class WorkerAddController {
 
     //Main border controller handle
-    private mainBorderController mbc;
+    private MainBorderController mbc;
 
     @FXML
     JFXTextField firstNameEdit;
@@ -52,12 +51,12 @@ public class workerAddController {
     //back to main menu
     @FXML
     public void backToMenu() {
-        mainWindowController mwc = mbc.getMwc();
+        MainWindowController mwc = mbc.getMwc();
         mwc.loadMenuScreen();
     }
 
     //setting Main Border Controller
-    public void setMbc(mainBorderController mbc){
+    public void setMbc(MainBorderController mbc){
         this.mbc = mbc;
     }
 
@@ -83,13 +82,13 @@ public class workerAddController {
         else if(!salaryEdit.getText().matches("^\\d*$"))
             createErrorWindow("Pole wynagrodzenie musi byc liczba"); //to write
         else {
-            dbConn.connectToDatabase();
+            DbConn.connectToDatabase();
             EmployeeModel employeeToSave = new EmployeeModel();
             String birthDateTemp = Integer.toString(dayCombo.getValue()) + "-" + Integer.toString(monthCombo.getValue()) + "-" + Integer.toString(yearCombo.getValue());
             employeeToSave.saveEmployeeInDb(firstNameEdit.getText(), lastNameEdit.getText(),
                     birthDateTemp, addressEdit.getText(), branchEdit.getText(), Double.parseDouble(salaryEdit.getText()));
             clearForm();
-            dbConn.disconnectDatabase();
+            DbConn.disconnectDatabase();
         }
     }
     //clear form
@@ -111,8 +110,8 @@ public class workerAddController {
         Scene scene;
         try {
             stage = new Stage();
-            pane = fxmlUtils.fxmlLoader("/fxml/EmptyEditMessage.fxml");
-            EmptyEditMessageController et = fxmlUtils.loaderForController.getController();
+            pane = FxmlUtils.fxmlLoader("/fxml/EmptyEditMessage.fxml");
+            EmptyEditMessageController et = FxmlUtils.loaderForController.getController();
             et.setEditText(msg);
             et.setStage(stage);
             scene = new Scene(pane);

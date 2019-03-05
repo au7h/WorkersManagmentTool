@@ -21,7 +21,6 @@ public class EmptyEditMessageController {
 
     @FXML
     public void initialize(){
-        //do something ..
     }
 
     @FXML

@@ -3,34 +3,28 @@ package controllers;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import dbUtils.dbConn;
+import dbUtils.DbConn;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import utils.dialogsUtils;
-import utils.fxmlUtils;
-
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
+import utils.DialogsUtils;
+import utils.FxmlUtils;
 
 
 /**
  * Created by kamil on 10.06.2017.
  */
-public class mainBorderController {
+public class MainBorderController {
 
-    private mainWindowController mwc;
+    private MainWindowController mwc;
 
     private static final String BUTTONS_TOP_FXML = "/fxml/buttonsTop.fxml";
-    private buttonsTopController btp;
+    private ButtonsTopController btp;
 
     @FXML
     private AnchorPane anchorBorder;
@@ -49,7 +43,7 @@ public class mainBorderController {
     public void showMainScreen(){
         try {
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource(BUTTONS_TOP_FXML));
-            loader.setResources(fxmlUtils.getResourceBundle());
+            loader.setResources(FxmlUtils.getResourceBundle());
             Pane pane = loader.load();
             btp = loader.getController();
             btp.setMbc(this);
@@ -69,21 +63,21 @@ public class mainBorderController {
                     drawerMain.open();
             });
         } catch (Exception ex){
-            dialogsUtils.errorDialog(ex.getMessage());
+            DialogsUtils.errorDialog(ex.getMessage());
         }
     }
 
-    public void setMwc(mainWindowController mwc){
+    public void setMwc(MainWindowController mwc){
         this.mwc = mwc;
     }
 
-    public mainWindowController getMwc(){
+    public MainWindowController getMwc(){
         return this.mwc;
     }
 
     @FXML
     public void closeApp() {
-        if(dialogsUtils.dialogExitConfirmation().get() == ButtonType.OK){
+        if(DialogsUtils.dialogExitConfirmation().get() == ButtonType.OK){
             Platform.exit();
             System.exit(0);
         }
@@ -91,6 +85,6 @@ public class mainBorderController {
 
     @FXML
     public void dbConnTest() {
-        dbConn.connectToDatabase();
+        DbConn.connectToDatabase();
     }
 }

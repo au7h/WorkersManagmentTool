@@ -1,19 +1,18 @@
 package controllers;
 
-import dbUtils.dbConn;
+import dbUtils.DbConn;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import utils.dialogsUtils;
-import utils.fxmlUtils;
+import utils.DialogsUtils;
+import utils.FxmlUtils;
 
 /**
  * Created by kamil on 15.06.2017.
  */
-public class mainWindowController {
+public class MainWindowController {
 
     private static final String FXML_MAIN_BORDER = "/fxml/mainBorder.fxml";
 
@@ -26,8 +25,8 @@ public class mainWindowController {
     }
 
     public void loadMenuScreen() {
-       Pane pane = fxmlUtils.fxmlLoader(FXML_MAIN_BORDER);
-        mainBorderController mbc = fxmlUtils.loaderForController.getController();
+       Pane pane = FxmlUtils.fxmlLoader(FXML_MAIN_BORDER);
+        MainBorderController mbc = FxmlUtils.loaderForController.getController();
         mbc.setMwc(this);
         setScreen(pane);
     }
@@ -41,8 +40,8 @@ public class mainWindowController {
     }
 
     public void closeApp() {
-        if(dialogsUtils.dialogExitConfirmation().get() == ButtonType.OK){
-            if(dbConn.isConnected) dbConn.disconnectDatabase();
+        if(DialogsUtils.dialogExitConfirmation().get() == ButtonType.OK){
+            if(DbConn.isConnected) DbConn.disconnectDatabase();
             Platform.exit();
             System.exit(0);
         }

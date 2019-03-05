@@ -6,7 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="buttonsTop" fx:id="boxButtonsTop" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="2.0" style="-fx-background-color: #4682b4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.buttonsTopController">
+<VBox id="buttonsTop" fx:id="boxButtonsTop" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="2.0" style="-fx-background-color: #4682b4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ButtonsTopController">
    <children>
       <ImageView fitHeight="204.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
          <image>

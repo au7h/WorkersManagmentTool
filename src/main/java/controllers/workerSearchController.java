@@ -4,7 +4,7 @@ package controllers;
 import ModelFX.EmployeeFX;
 import ModelFX.EmployeeModel;
 import dbModels.Employee;
-import dbUtils.dbConn;
+import dbUtils.DbConn;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -12,7 +12,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.converter.DoubleStringConverter;
 import org.omg.CORBA.portable.ApplicationException;
-import utils.dialogsUtils;
+import utils.DialogsUtils;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by kamil on 15.06.2017.
  */
-public class workerSearchController {
+public class WorkerSearchController {
     @FXML
     private TextField nameField;
     @FXML
@@ -54,16 +54,15 @@ public class workerSearchController {
     @FXML
     private TableColumn<EmployeeFX, Double> salaryColumn;
 
-    private mainBorderController mbc;
+    private MainBorderController mbc;
     private EmployeeModel employeeModel;
     private String query;
 
     @FXML
     public void initialize(){
-        //to avoid bad query format
         query = "From Employees";
 
-        dbConn.connectToDatabase();
+        DbConn.connectToDatabase();
         for(int i=1;i<32;i++)
             dayCombo.getItems().add(i);
         for(int i=1;i<13;i++)
@@ -74,9 +73,9 @@ public class workerSearchController {
         try {
             this.employeeModel.init();
         }catch(ApplicationException e){
-            dialogsUtils.errorDialog(e.getMessage());
+            DialogsUtils.errorDialog(e.getMessage());
         } finally {
-            dbConn.disconnectDatabase();
+            DbConn.disconnectDatabase();
         }
         this.workersTableView.setItems(this.employeeModel.getEmployeeFXObservableList());
         this.nameColumn.setCellValueFactory(cellData-> cellData.getValue().firstNameProperty());
@@ -93,6 +92,7 @@ public class workerSearchController {
         this.addressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         this.salaryColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
 
+        //listener
         this.workersTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.employeeModel.setEmployeeFXObjectPropertyEdit(newValue);
         });
@@ -100,21 +100,20 @@ public class workerSearchController {
 
     @FXML
     public void backToMenu() {
-        if(dbConn.isConnected) dbConn.disconnectDatabase();
-        mainWindowController mwc = mbc.getMwc();
+        if(DbConn.isConnected) DbConn.disconnectDatabase();
+        MainWindowController mwc = mbc.getMwc();
         mwc.loadMenuScreen();
     }
 
     @FXML
     public void search(){
-        if(!dbConn.isConnected) dbConn.connectToDatabase();
+        if(!DbConn.isConnected) DbConn.connectToDatabase();
         short wchichIfWorks = 0;
         query ="FROM Employees where ";
         if(nameField.getText().isEmpty()&&surnameField.getText().isEmpty()&&branchField.getText().isEmpty()
                 &&dayCombo.getSelectionModel().getSelectedItem()==null&&monthCombo.getSelectionModel().getSelectedItem()==null
                 &&yearCombo.getSelectionModel().getSelectedItem()==null&&addressField.getText().isEmpty()
                 &&salaryFromField.getText().isEmpty()&&salaryToField.getText().isEmpty()) {
-            //dialogsUtils.createErrorWindow("Wpisz cokolwiek!");
             query = "FROM Employees";
             executeQueryOnTable(query);
         }
@@ -176,7 +175,6 @@ public class workerSearchController {
                 wchichIfWorks = 6;
             }
 
-            dialogsUtils.errorDialog(query);
             executeQueryOnTable(query);
         }
     }
@@ -193,18 +191,18 @@ public class workerSearchController {
     }
 
     private void sortAscOrDesc(String q){
-        if(!dbConn.isConnected) dbConn.connectToDatabase();
+        if(!DbConn.isConnected) DbConn.connectToDatabase();
         this.workersTableView.getItems().clear();
         try {
             employeeModel.searchEmployee(query+" "+q);
         } catch (ApplicationException e) {
-            dialogsUtils.errorDialog(e.getMessage());
+            DialogsUtils.errorDialog(e.getMessage());
         } finally {
-            if(dbConn.isConnected) dbConn.disconnectDatabase();
+            if(DbConn.isConnected) DbConn.disconnectDatabase();
         }
     }
 
-    public void setMbc(mainBorderController mbc){
+    public void setMbc(MainBorderController mbc){
         this.mbc = mbc;
     }
 
@@ -213,9 +211,9 @@ public class workerSearchController {
         try {
             employeeModel.searchEmployee(query);
         } catch (ApplicationException e) {
-            dialogsUtils.errorDialog(e.getMessage());
+            DialogsUtils.errorDialog(e.getMessage());
         } finally {
-            if(dbConn.isConnected) dbConn.disconnectDatabase();
+            if(DbConn.isConnected) DbConn.disconnectDatabase();
         }
     }
 
@@ -254,10 +252,10 @@ public class workerSearchController {
             search();
     }
 
-    //its not useful for us
+    //not used for autocomplete comboBoxes
     private void generatePromptForComboBox(String newValue, String name, String whatWeWant, ComboBox<String> field){
         if(!newValue.isEmpty()) {
-            if (!dbConn.isConnected) dbConn.connectToDatabase();
+            if (!DbConn.isConnected) DbConn.connectToDatabase();
             field.getItems().clear();
             String queryString = "FROM Employees where "+ name +" like '%" + newValue + "%'";
             List<Employee> listOf = employeeModel.searchEmployeeAndReturnResult(queryString);

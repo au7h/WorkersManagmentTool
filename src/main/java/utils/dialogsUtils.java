@@ -17,9 +17,9 @@ import java.util.ResourceBundle;
 /**
  * Created by kamil on 11.06.2017.
  */
-public class dialogsUtils {
+public class DialogsUtils {
 
-    static ResourceBundle bundle = fxmlUtils.getResourceBundle();
+    static ResourceBundle bundle = FxmlUtils.getResourceBundle();
 
     public static void dialogAboutApplication(){
         Alert aboutAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -55,8 +55,8 @@ public class dialogsUtils {
         Scene scene;
         try {
             stage = new Stage();
-            pane = fxmlUtils.fxmlLoader("/fxml/EmptyEditMessage.fxml");
-            EmptyEditMessageController et = fxmlUtils.loaderForController.getController();
+            pane = FxmlUtils.fxmlLoader("/fxml/EmptyEditMessage.fxml");
+            EmptyEditMessageController et = FxmlUtils.loaderForController.getController();
             et.setEditText(msg);
             et.setStage(stage);
             scene = new Scene(pane);
@@ -64,7 +64,7 @@ public class dialogsUtils {
             stage.initStyle(StageStyle.UNDECORATED);
             stage.show();
         } catch(Exception e){
-            dialogsUtils.errorDialog(e.getMessage());
+            DialogsUtils.errorDialog(e.getMessage());
         }
     }
 

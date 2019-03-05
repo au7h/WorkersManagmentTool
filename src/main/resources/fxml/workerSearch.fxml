@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.workerSearchController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.WorkerSearchController">
    <bottom>
       <JFXButton buttonType="RAISED" onAction="#backToMenu" style="-fx-background-color: gray;" text="Powrót do menu" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -145,13 +145,13 @@
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
                                     <Label prefHeight="17.0" prefWidth="56.0" text="Od" textFill="WHITE" />
-                                    <TextField fx:id="salaryFromField" onKeyPressed="#textFieldSearchInit" prefHeight="25.0" prefWidth="90.0" style="-fx-border-color: red;">
+                                    <TextField fx:id="salaryFromField" onKeyPressed="#textFieldSearchInit" prefHeight="25.0" prefWidth="90.0">
                                        <HBox.margin>
                                           <Insets right="5.0" />
                                        </HBox.margin>
                                     </TextField>
                                     <Label prefHeight="17.0" prefWidth="56.0" text="Do" textFill="WHITE" />
-                                    <TextField fx:id="salaryToField" onKeyPressed="#textFieldSearchInit" prefHeight="25.0" prefWidth="94.0" style="-fx-border-color: red;" />
+                                    <TextField fx:id="salaryToField" onKeyPressed="#textFieldSearchInit" prefHeight="25.0" prefWidth="94.0" />
                                  </children>
                               </HBox>
                            </children>
